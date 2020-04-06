@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  moveSpeed: 300
+  moveSpeed: 400
   turnSpeed: 5
   shootingTimeDisable: 0.4
   lookAtTransform: {fileID: 2035275333467205009}
