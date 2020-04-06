@@ -34,7 +34,7 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
             //Transform lookAt = player.transform;
             Vector3 lookat = player.transform.position;
             Vector3.ProjectOnPlane(lookat, Vector3.forward);
-            lookat = lookat + new Vector3(0, 1f, 0);
+            lookat = lookat + new Vector3(0, 1.4f, 0);
             enemy.transform.LookAt(lookat);
             agent.destination = player.transform.position;
         }
@@ -44,7 +44,7 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     public void InstantiateMagicBall()
     {
         var distance = player != null ? Vector3.Distance(player.transform.position, this.transform.position) : -1;
-        if (player != null && distance < 5 && distance > 0)
+        if (player != null && distance < 15 && distance > 0)
         {
             GameObject magicBallInstance;
             magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;

@@ -125,7 +125,6 @@ GameObject:
   m_Component:
   - component: {fileID: 512109284122753582}
   - component: {fileID: 6792970245255015785}
-  - component: {fileID: 2795941312453867555}
   - component: {fileID: 3805186150906706342}
   - component: {fileID: 9203044987160984627}
   m_Layer: 0
@@ -162,23 +161,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2795941312453867555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 891348137895238639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6303a53942135ea469a6623cf289bfe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  enemy: {fileID: 6629061359954879129}
-  MagicSpawnPoint: {fileID: 4072803662816999868}
-  MagicBall: {fileID: 100000, guid: 519e632abbd2c4cfca074ab7c2c6450d, type: 3}
 --- !u!114 &3805186150906706342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +192,8 @@ MonoBehaviour:
   syncInterval: 0.1
   enemy: {fileID: 6629061359954879129}
   MagicSpawnPoint: {fileID: 4072803662816999868}
-  MagicBall: {fileID: 100000, guid: 519e632abbd2c4cfca074ab7c2c6450d, type: 3}
+  MagicBall: {fileID: 6370158446770328255, guid: a58da5dad0771f04eba454a1f41ab630,
+    type: 3}
   agent: {fileID: 4060116080536149351}
 --- !u!1 &4072803662816999868
 GameObject:
@@ -236,7 +219,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4072803662816999868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 1}
+  m_LocalPosition: {x: 0, y: 0.368, z: 0.871}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6629061359954879131}
@@ -348,7 +331,7 @@ Transform:
   m_GameObject: {fileID: 6629061359954879129}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.80556, y: 1.487, z: -18.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 6629061360879649070}
   - {fileID: 2242864874836251008}
