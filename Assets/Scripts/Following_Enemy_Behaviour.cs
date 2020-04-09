@@ -18,12 +18,17 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     [SerializeField]
     private NavMeshAgent agent;
 
+    [SerializeField]
+    private Animator anim;
+    [SerializeField]
+    private float AttackAnimationLength = 2f;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = null;
-        InvokeRepeating("InstantiateMagicBall", 0f, 0.7f);
+        InvokeRepeating("InstantiateMagicBall", 0f, 1f);
     }
 
     // Update is called once per frame
@@ -46,12 +51,20 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         var distance = player != null ? Vector3.Distance(player.transform.position, this.transform.position) : -1;
         if (player != null && distance < 15 && distance > 0)
         {
-            GameObject magicBallInstance;
-            magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;
-            NetworkServer.Spawn(magicBallInstance);
-            IEnumerator coroutine = WaitAndDestroyMagicBall(2.0f, magicBallInstance);
-            StartCoroutine(coroutine);
+            StartCoroutine(ShootingAnimationAndSpawnMagic());
         }
+    }
+
+    [Server]
+    public IEnumerator ShootingAnimationAndSpawnMagic()
+    {
+        anim.SetTrigger("AttackTrigger");
+        yield return new WaitForSecondsRealtime(AttackAnimationLength);
+        GameObject magicBallInstance;
+        magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;
+        NetworkServer.Spawn(magicBallInstance);
+        IEnumerator coroutine = WaitAndDestroyMagicBall(2.0f, magicBallInstance);
+        StartCoroutine(coroutine);
     }
 
     [Server]
