@@ -24,6 +24,15 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     private float AttackAnimationLength = 2f;
 
 
+    [SerializeField]
+    private Renderer graphicRenderer;
+    private float MAX_DISTANCE = 30.7f;
+    [SerializeField]
+    Color near;
+    [SerializeField]
+    Color far;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +51,16 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
             lookat = lookat + new Vector3(0, 1.4f, 0);
             enemy.transform.LookAt(lookat);
             agent.destination = player.transform.position;
+
+            //Get distance between those two Objects
+            var distanceApart = Vector3.Distance(this.transform.position, player.transform.position);
+
+            //Convert 15 and 30.7 distance range to 0f and 1f range
+            var lerp = MapValue(distanceApart, 15f, MAX_DISTANCE, 0f, 1f);
+
+            //Lerp Color between near and far color
+            Color lerpColor = Color.Lerp(near, far, lerp);
+            this.graphicRenderer.material.color = lerpColor;
         }
     }
 
@@ -80,6 +99,7 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         if (other.gameObject.tag == "Player" && player == null)
         {
             player = other;
+            Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
         }
     }
 
@@ -99,5 +119,10 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         {
             player = null;
         }
+    }
+
+    public float MapValue(float mainValue, float inValueMin, float inValueMax, float outValueMin, float outValueMax)
+    {
+        return (mainValue - inValueMin) * (outValueMax - outValueMin) / (inValueMax - inValueMin) + outValueMin;
     }
 }

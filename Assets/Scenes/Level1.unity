@@ -920,6 +920,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9203044987160984627, guid: 0d5e01629bcce4c4187d2d2d858b2ab1,
+        type: 3}
+      propertyPath: AttackAnimationLength
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7881385228896618286, guid: 0d5e01629bcce4c4187d2d2d858b2ab1,
         type: 3}
       propertyPath: m_ApplyRootMotion
