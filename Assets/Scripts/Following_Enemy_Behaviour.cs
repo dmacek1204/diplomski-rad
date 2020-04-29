@@ -8,6 +8,8 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
 {
     private Collider player;
 
+    [SerializeField]
+    private NetworkAnimator networkAnimator;
 
     [SerializeField]
     private GameObject enemy;
@@ -23,7 +25,7 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     [SerializeField]
     private float AttackAnimationLength = 2f;
 
-
+    
     [SerializeField]
     private Renderer graphicRenderer;
     private float MAX_DISTANCE = 30.7f;
@@ -60,7 +62,8 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
 
             //Lerp Color between near and far color
             Color lerpColor = Color.Lerp(near, far, lerp);
-            this.graphicRenderer.material.color = lerpColor;
+            //this.graphicRenderer.material.color = lerpColor;
+            RpcChangeColor(lerpColor);
         }
     }
 
@@ -74,16 +77,29 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void RpcChangeColor(Color color)
+    {
+        this.graphicRenderer.material.color = color;
+    }
+
     [Server]
     public IEnumerator ShootingAnimationAndSpawnMagic()
     {
-        anim.SetTrigger("AttackTrigger");
+        //RpcStartShootingAnimation();
+        networkAnimator.SetTrigger("AttackTrigger");
         yield return new WaitForSecondsRealtime(AttackAnimationLength);
         GameObject magicBallInstance;
         magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;
         NetworkServer.Spawn(magicBallInstance);
         IEnumerator coroutine = WaitAndDestroyMagicBall(2.0f, magicBallInstance);
         StartCoroutine(coroutine);
+    }
+
+    [ClientRpc]
+    public void RpcStartShootingAnimation()
+    {
+        anim.SetTrigger("AttackTrigger");
     }
 
     [Server]
