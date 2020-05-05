@@ -19,6 +19,13 @@ public class DestroyMagicOnCollision : NetworkBehaviour
 
     }
 
+    // for collision with PS Magic Projectile
+    void OnCollisionEnter(Collision collision)
+    {
+        Destroy(this.gameObject);
+    }
+
+    // used for collision with fireShot PS
     void OnParticleCollision(GameObject other)
     {
         Destroy(this.gameObject);

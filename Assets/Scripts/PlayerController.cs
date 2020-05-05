@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour
 {
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float moveSpeed = 8f;
     [SerializeField]
     private float turnSpeed = 5f;
     [SerializeField]

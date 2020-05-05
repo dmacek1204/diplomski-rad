@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class PlayerAnimation : NetworkBehaviour
     public bool Moving = false;
     [SerializeField]
     private Animator anim;
-    private float AttackAnimationLength = 0.4f;
+    private float AttackAnimationLength = 0.7f;
 
     void Update()
     {
@@ -22,13 +23,6 @@ public class PlayerAnimation : NetworkBehaviour
         var horizontal = Input.GetAxisRaw("Horizontal");
         var vertical = Input.GetAxisRaw("Vertical");
 
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        //    StartCoroutine(WaitForAttackAnimationToFinish());
-        //    //PlayerAttackAnimation();
-        //}
-
-        //TODO: treba dodati animaciju kad drzi shield
         if (Input.GetButton("Fire2"))
         {
             
@@ -102,6 +96,7 @@ public class PlayerAnimation : NetworkBehaviour
 
     void Attack(bool moving)
     {
+        anim.Play("Attack1Man");
         StartCoroutine(WaitForAttackAnimationToFinish());
     }
 
@@ -139,7 +134,6 @@ public class PlayerAnimation : NetworkBehaviour
 
         Move(moving);
     }
-
 
 
     private IEnumerator WaitForAttackAnimationToFinish()

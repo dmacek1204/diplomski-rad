@@ -11,34 +11,46 @@ public class SpawnMagic : NetworkBehaviour
     public GameObject MagicSpawnPoint;
     // Spell (magicBall) that we are instantiating
     public GameObject MagicBall;
-    //public float MagicBall_Forward_Force;
 
     public float shootingTimeDisable;
+    public float spawnDelay;
     private bool isShooting = false;
+    private float MagicBall_Forward_Force = 280.0f;
 
-    // Update is called once per frame
+    private GameObject magicBallInstance;
+    private Rigidbody MagicBallCtrl;
+    
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         if (Input.GetButtonDown("Fire1") && !isShooting && !Input.GetButton("Fire2"))
         {
             StartCoroutine(DisableShootingAfterSpawningMagic());
-            CmdInstantiateMagicBall();
+            CmdSpawnWithDelay();
         }
     }
+    
+    [Command]
+    private void CmdSpawnWithDelay()
+    {
+        StartCoroutine(DelaySpawningUntilAnimationEnds(spawnDelay));
+    }
 
-    [Command] public void CmdInstantiateMagicBall()
+    private IEnumerator DelaySpawningUntilAnimationEnds(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Spawn();
+    }
+
+    private void Spawn()
     {
         GameObject magicBallInstance;
         magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;
 
-        //Rigidbody MagicBallCtrl;
-        //MagicBallCtrl = magicBallInstance.GetComponent<Rigidbody>();
-
-        //MagicBallCtrl.AddForce(transform.forward * MagicBall_Forward_Force);
-        //DODANO
-        //Destroy(MagicBallCtrl, 3.0f);
         NetworkServer.Spawn(magicBallInstance);
-        
     }
 
     private IEnumerator DisableShootingAfterSpawningMagic()
@@ -47,4 +59,21 @@ public class SpawnMagic : NetworkBehaviour
         yield return new WaitForSecondsRealtime(shootingTimeDisable);
         isShooting = false;
     }
+
+    //[Command] public void CmdInstantiateMagicBall()
+    //{
+    //    StartCoroutine(DelaySpawningUntilAnimationEnds());
+    //    GameObject magicBallInstance;
+    //    magicBallInstance = Instantiate(MagicBall, MagicSpawnPoint.transform.position, MagicSpawnPoint.transform.rotation) as GameObject;
+
+    //    Rigidbody MagicBallCtrl;
+    //    MagicBallCtrl = magicBallInstance.GetComponent<Rigidbody>();
+
+    //    MagicBallCtrl.AddForce(transform.forward * MagicBall_Forward_Force);
+
+    //    //Destroy(MagicBallCtrl, 3.0f);
+    //    NetworkServer.Spawn(magicBallInstance);
+
+    //}
+
 }

@@ -18,6 +18,11 @@ public class Damage : MonoBehaviour
         
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        DealDamage();
+    }
+
     void OnParticleCollision(GameObject other)
     {
         DealDamage();
