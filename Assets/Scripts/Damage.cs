@@ -17,7 +17,7 @@ public class Damage : MonoBehaviour
     {
         
     }
-
+    
     void OnCollisionEnter(Collision collision)
     {
         DealDamage();
@@ -27,6 +27,7 @@ public class Damage : MonoBehaviour
     {
         DealDamage();
     }
+
     public void DealDamage()
     {
         GetComponent<Health>().health -= damageRate;

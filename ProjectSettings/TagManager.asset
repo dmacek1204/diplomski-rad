@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shield
   - Magic
+  - Fire
+  - Spell
   layers:
   - Default
   - TransparentFX

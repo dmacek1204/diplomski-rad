@@ -34,17 +34,23 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     [SerializeField]
     Color far;
 
+    [SerializeField]
+    public bool canAttack = true;
+
 
     // Start is called before the first frame update
     void Start()
     {
         player = null;
+        if (isLocalPlayer) return;
         InvokeRepeating("InstantiateMagicBall", 0f, 1f);
     }
 
+    
     // Update is called once per frame
     void Update()
     {
+        if (isLocalPlayer) return;
         if (player != null)
         {
             //Transform lookAt = player.transform;
@@ -62,19 +68,24 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
 
             //Lerp Color between near and far color
             Color lerpColor = Color.Lerp(near, far, lerp);
-            //this.graphicRenderer.material.color = lerpColor;
-            RpcChangeColor(lerpColor);
+            ChangeColor(lerpColor);
         }
     }
 
-    [Server]
     public void InstantiateMagicBall()
     {
+        if (!isServer) return;
         var distance = player != null ? Vector3.Distance(player.transform.position, this.transform.position) : -1;
-        if (player != null && distance < 15 && distance > 0)
+        if (player != null && distance < 15 && distance > 0 && canAttack)
         {
             StartCoroutine(ShootingAnimationAndSpawnMagic());
         }
+    }
+
+    public void ChangeColor(Color color)
+    {
+        if (!isServer) return;
+        RpcChangeColor(color);
     }
 
     [ClientRpc]
@@ -86,7 +97,6 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     [Server]
     public IEnumerator ShootingAnimationAndSpawnMagic()
     {
-        //RpcStartShootingAnimation();
         networkAnimator.SetTrigger("AttackTrigger");
         yield return new WaitForSecondsRealtime(AttackAnimationLength);
         GameObject magicBallInstance;
@@ -96,12 +106,6 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         StartCoroutine(coroutine);
     }
 
-    [ClientRpc]
-    public void RpcStartShootingAnimation()
-    {
-        anim.SetTrigger("AttackTrigger");
-    }
-
     [Server]
     private IEnumerator WaitAndDestroyMagicBall(float waitTime, GameObject magicBall)
     {
@@ -109,28 +113,30 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         NetworkServer.Destroy(magicBall);
     }
 
-    [Server]
     public void OnTriggerEnter(Collider other)
     {
+        if (isLocalPlayer) return;
+
         if (other.gameObject.tag == "Player" && player == null)
         {
             player = other;
-            Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
         }
     }
 
-    [Server]
     private void OnTriggerStay(Collider other)
     {
+        if (isLocalPlayer) return;
+
         if (other.gameObject.tag == "Player" && (player == other || player == null))
         {
             player = other;
         }
     }
 
-    [Server]
     public void OnTriggerExit(Collider other)
     {
+        if (isLocalPlayer) return;
+
         if (other.gameObject.tag == "Player" && player == other)
         {
             player = null;
