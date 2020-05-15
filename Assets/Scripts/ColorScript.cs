@@ -35,7 +35,7 @@ public class ColorScript : NetworkBehaviour
             return;
         }
         ChangeColor(colour);
-        if (isServer)
+        if (hasAuthority)
         {
             RpcSelectColor(colour);
         }

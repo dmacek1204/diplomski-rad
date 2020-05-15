@@ -51,7 +51,7 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
     void Update()
     {
         if (isLocalPlayer) return;
-        if (player != null)
+        if (player != null && canAttack)
         {
             //Transform lookAt = player.transform;
             Vector3 lookat = player.transform.position;
@@ -69,6 +69,10 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
             //Lerp Color between near and far color
             Color lerpColor = Color.Lerp(near, far, lerp);
             ChangeColor(lerpColor);
+        }
+        if(!canAttack)
+        {
+            agent.destination = enemy.transform.position;
         }
     }
 
