@@ -53,7 +53,6 @@ public class Following_Enemy_Behaviour : NetworkBehaviour
         if (isLocalPlayer) return;
         if (player != null && canAttack)
         {
-            //Transform lookAt = player.transform;
             Vector3 lookat = player.transform.position;
             Vector3.ProjectOnPlane(lookat, Vector3.forward);
             lookat = lookat + new Vector3(0, 1.4f, 0);
